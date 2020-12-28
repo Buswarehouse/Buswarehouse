@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>Layui</title>
+    <link rel="stylesheet" th:href="@{/js/layui/css/layui.css}" />
+    <script th:src="@{/js/layui/layui.js}" charset="utf-8"></script>
+</head>
+<body>
+<div class="demoTable" align="center">
+    搜索文档：
+    <div class="layui-inline">
+        <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+    </div>
+    <button class="layui-btn" data-type="reload">搜索</button>
+</div>
+<table class="layui-hide" id="test" lay-filter="test"></table>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">我要下载</a>
+</script>
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+        table.render({
+            elem: '#test'
+            ,url:'/fileUpLoad/getSelectTable'
+            ,cols: [
+                [
+                {field:'titleName', title: '文档标题'}
+                , {
+                    field: 'name', title: '上传人', templet: function (data) {
+                        if (data.user.name == "" || data.user.name == null) {
+                            return "";
+                        } else {
+                            return data.user.name;
+                        }
+                    }}
+                ,{field:'uploadTime', title: '上传时间', sort: true}
+                ,{field:'loadScore', title: '下载积分'}
+                ,{field:'fileType', title: '文档类型'}
+                ,{field:'upLoadNum', title: '下载次数', sort: true}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
+            ]
+         ]
+            ,id: 'testReload'
+            ,page: true
+        });
+    var $ = layui.$, active = {
+        reload: function(){
+            var demoReload = $('#demoReload');
+            table.reload('testReload', {
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+                ,where: {
+                        titleName: demoReload.val()
+                }
+            }, 'data');
+        }
+    };
+    $('.demoTable .layui-btn').on('click', function(){
+        var type = $(this).data('type');
+        active[type] ? active[type].call(this) : '';
+    });
+    //监听行工具事件
+    table.on('tool(test)', function(obj){
+        console.log()
+     if(obj.event === 'edit'){
+         layer.confirm('真的下载么', function(index){
+             var fileName=obj.data.fileName;
+             var fileType=obj.data.fileType;
+             var newFileName=fileName+"."+fileType;//生成文件名
+             if(newFileName!=""||newFileName!=null){
+                 layer.close(index);
+                 location.href="/fileUpLoad/downLoadTwo?fileName="+newFileName;
+             }
+         });
+        }
+    });
+});
+</script>
+</body>
+</html>

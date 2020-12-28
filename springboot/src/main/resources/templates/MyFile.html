@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>我的文档</title>
+    <link rel="stylesheet" th:href="@{/js/layui/css/layui.css}" />
+    <script type="text/javascript" th:src="@{/js/layui/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery-3.5.1.js}"></script>
+    <link rel="stylesheet" th:href="/css/MyFile.css">
+</head>
+<body>
+<div class="demoTable">
+        <div class="layui-inline">
+            <label class="layui-form-label">上传时间：</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="beginTime" placeholder="yyyy-MM-dd">
+            </div>
+        </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">至：</label>
+        <div class="layui-input-inline">
+            <input type="text" class="layui-input" id="endTime" placeholder="yyyy-MM-dd">
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">文档类型：</label>
+        <div class="layui-input-inline">
+            <select name="FileType" lay-verify="required" lay-search="">
+                <option value=""></option>
+                <option value="ppt">ppt</option>
+                <option value="jsp">jsp</option>
+                <option value="html">html</option>
+                <option value="js">js</option>
+                <option value="css">css</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">审核状态：</label>
+        <div class="layui-input-inline">
+            <select name="checkState" lay-verify="required" lay-search="">
+                <option value=""></option>
+                <option value="待审核">待审核</option>
+                <option value="审核不通过">审核不通过</option>
+                <option value="审核通过">审核通过</option>
+            </select>
+        </div>
+    </div>
+    <button class="layui-btn" data-type="reload">搜索</button>
+</div>
+<table class="layui-hide" id="MyScore"></table>
+</body>
+</html>

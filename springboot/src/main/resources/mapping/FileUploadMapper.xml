@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.cykj.mapper.FileUploadMapper">
+    <insert id="insertTable" parameterType="FileUpload" keyProperty="id" useGeneratedKeys="true" >
+        insert into fileupload(FileName,LoadScore,FileType,CheckState,Uploadid,titleName,content,upLoadNum)values
+        (#{fileName},#{loadScore},#{fileType},#{checkState},#{uploadId},#{titleName},#{content},#{upLoadNum})
+    </insert>
+<!--//搜索文档显示-->
+    <select id="flies" parameterType="FileUpload" resultMap="manyOne" >
+        select * from fileupload  f left join user u  on f.uploadid=u.id where 1=1
+        <if test="titleName!=null and titleName!=''">
+            and titleName like "%"#{titleName}"%"
+        </if>
+        and checkState=#{checkState}
+    </select>
+    <resultMap id="manyOne" type="FileUpload">
+        <id column="id" property="id"></id>
+        <result column="titleName" property="titleName"></result>
+        <result column="uploadTime" property="uploadTime"></result>
+        <result column="loadScore" property="loadScore"></result>
+        <result column="fileType" property="fileType"></result>
+        <result column="upLoadNum" property="upLoadNum"></result>
+        <result column="fileName" property="fileName"></result>
+        <association property="user" javaType="User">
+            <result column="name" property="name"></result>
+        </association>
+    </resultMap>
+<!--    搜索文档表格显示数量-->
+    <select id="selectCount" parameterType="FileUpload" resultType="Int">
+        select count(*) from fileupload where 1=1
+        <if test="titleName!=null and titleName!=''">
+            and titleName like "%"#{titleName}"%"
+        </if>
+        and checkState=#{checkState}
+    </select>
+</mapper>
